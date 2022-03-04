@@ -26,7 +26,9 @@ const Message *recv()
         assert(fifo != 0);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    ssize_t  rs = read(fifo, m, sizeof(Message))
+    std::cout << rs << "?" << sizeof(Message) << std::endl;
+    assert(rs == sizeof(Message));
     assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     return m;
 }
