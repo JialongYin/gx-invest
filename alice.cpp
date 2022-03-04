@@ -151,7 +151,7 @@ void send(const Message *message)
         fifo = open(filename, O_WRONLY);
         assert(fifo != 0);
     }
-    std::cout << "alice: send wait" << std::endl;
+    // std::cout << "alice: send wait" << std::endl;
     assert(write(fifo, message, message->size) == message->size);
 }
 
