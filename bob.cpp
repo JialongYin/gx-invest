@@ -6,12 +6,12 @@ void send(const Message *message)
     static int fifo = 0;
     if (fifo == 0)
     {
-        std::cout << "bob send if (fifo == 0)" << std::endl;
+        // std::cout << "bob send if (fifo == 0)" << std::endl;
         const char *filename = "bob_to_alice";
-        std::cout << "bob: bob_to_alice created beforehand" << ": " << access(filename, F_OK) << std::endl;
+        // std::cout << "bob: bob_to_alice created beforehand" << ": " << access(filename, F_OK) << std::endl;
         if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
             mkfifo(filename, 0666);
-            std::cout << "bob: bob_to_alice created" << ": " << access(filename, F_OK) << std::endl;
+            // std::cout << "bob: bob_to_alice created" << ": " << access(filename, F_OK) << std::endl;
         }
         fifo = open(filename, O_WRONLY);
         assert(fifo != 0);
@@ -25,11 +25,11 @@ const Message *recv()
     static int fifo = 0;
     if (fifo == 0)
     {
-        std::cout << "bob recv if (fifo == 0)" << std::endl;
+        // std::cout << "bob recv if (fifo == 0)" << std::endl;
         const char *filename = "alice_to_bob";
         if (access(filename, F_OK)) {
             mkfifo(filename, 0666);
-            std::cout << "bob: alice_to_bob created" << std::endl;
+            // std::cout << "bob: alice_to_bob created" << std::endl;
         }
 
         fifo = open(filename, O_RDONLY);
