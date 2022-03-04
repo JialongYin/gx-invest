@@ -15,8 +15,8 @@
 
 运行方法（示例代码基于Named Pipe实现）
 - make
-- ./alice
-- ./bob
+- ./alice &
+- ./bob &
 
 提交内容
 - 修改后的Makefile、common.h、alice.cpp、bob.cpp

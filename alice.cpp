@@ -141,8 +141,11 @@ void send(const Message *message)
     if (fifo == 0)
     {
         const char *filename = "alice_to_bob";
-        if (access(filename, F_OK))
+        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
             mkfifo(filename, 0666);
+            std::cout << "alice: alice_to_bob created" << std::endl;
+        }
+
         fifo = open(filename, O_WRONLY);
         assert(fifo != 0);
     }
@@ -155,8 +158,11 @@ const Message *recv()
     if (fifo == 0)
     {
         const char *filename = "bob_to_alice";
-        if (access(filename, F_OK))
+        if (access(filename, F_OK)) {
             mkfifo(filename, 0666);
+            std::cout << "alice: bob_to_alice created" << std::endl;
+        }
+
         fifo = open(filename, O_RDONLY);
         assert(fifo != 0);
     }
