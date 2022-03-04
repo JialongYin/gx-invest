@@ -28,7 +28,7 @@ const Message *recv()
         const char *filename = "alice_to_bob";
         if (access(filename, F_OK)) {
             mkfifo(filename, 0666);
-            std::cout << "bob: alice_to_bob created" << std::endl;
+            std::cout << "bob: alice_to_bob created" << ": " << access(filename, F_OK) << std::endl;
         }
 
         fifo = open(filename, O_RDONLY);
