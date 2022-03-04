@@ -137,7 +137,7 @@ void record(const Message *m)
 
 void send(const Message *message)
 {
-    std::cout << "alice send" << std::endl;
+    // std::cout << "alice send" << std::endl;
     static int fifo = 0;
     if (fifo == 0)
     {
@@ -156,7 +156,7 @@ void send(const Message *message)
 
 const Message *recv()
 {
-    std::cout << "alice recv" << std::endl;
+    // std::cout << "alice recv" << std::endl;
     static int fifo = 0;
     if (fifo == 0)
     {

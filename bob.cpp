@@ -2,7 +2,7 @@
 
 void send(const Message *message)
 {
-    std::cout << "bob send" << std::endl;
+    // std::cout << "bob send" << std::endl;
     static int fifo = 0;
     if (fifo == 0)
     {
@@ -20,7 +20,7 @@ void send(const Message *message)
 
 const Message *recv()
 {
-    std::cout << "bob recv" << std::endl;
+    // std::cout << "bob recv" << std::endl;
     static int fifo = 0;
     if (fifo == 0)
     {
