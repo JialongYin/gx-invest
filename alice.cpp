@@ -162,6 +162,7 @@ const Message *recv()
     {
         std::cout << "alice recv if (fifo == 0)" << std::endl;
         const char *filename = "bob_to_alice";
+        std::cout << "alice: bob_to_alice created beforehand" << ": " << access(filename, F_OK) << std::endl;
         if (access(filename, F_OK)) {
             mkfifo(filename, 0666);
             std::cout << "alice: bob_to_alice created" << ": " << access(filename, F_OK) << std::endl;

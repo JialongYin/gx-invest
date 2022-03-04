@@ -8,6 +8,7 @@ void send(const Message *message)
     {
         std::cout << "bob send if (fifo == 0)" << std::endl;
         const char *filename = "bob_to_alice";
+        std::cout << "bob: bob_to_alice created beforehand" << ": " << access(filename, F_OK) << std::endl;
         if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
             mkfifo(filename, 0666);
             std::cout << "bob: bob_to_alice created" << ": " << access(filename, F_OK) << std::endl;
