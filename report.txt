@@ -1,0 +1,9 @@
+1.
+Named pipe:
+Message queues:
+Sockets:
+Shared memory:
+Once the memory is mapped into the address space of the processes that are sharing the memory region,
+processes do not execute any system calls into the kernel in passing data between processes. The copying
+of message data is eliminated.
+Semaphores is used to synchronize shared memory between processes.

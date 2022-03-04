@@ -145,12 +145,13 @@ void send(const Message *message)
         const char *filename = "alice_to_bob";
         if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
             mkfifo(filename, 0666);
-            // std::cout << "alice: alice_to_bob created" << std::endl;
+            std::cout << "alice: alice_to_bob created" << std::endl;
         }
 
         fifo = open(filename, O_WRONLY);
         assert(fifo != 0);
     }
+    std::cout << "alice: send wait" << std::endl;
     assert(write(fifo, message, message->size) == message->size);
 }
 
@@ -163,8 +164,6 @@ const Message *recv()
         // std::cout << "alice recv if (fifo == 0)" << std::endl;
         const char *filename = "bob_to_alice";
         // std::cout << "alice: bob_to_alice created beforehand" << ": " << access(filename, F_OK) << std::endl;
-        mkfifo(filename, 0666);
-        mkfifo(filename, 0666);
         if (access(filename, F_OK)) {
             mkfifo(filename, 0666);
             // std::cout << "alice: bob_to_alice created" << ": " << access(filename, F_OK) << std::endl;
