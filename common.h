@@ -30,6 +30,13 @@
 // extern sem_t full_ba;
 // extern sem_t mutex_ba;
 
+sem_t empty_ab;
+sem_t full_ab;
+sem_t mutex_ab;
+sem_t empty_ba;
+sem_t full_ba;
+sem_t mutex_ba;
+
 
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
