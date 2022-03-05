@@ -9,6 +9,7 @@ sem_t *full_ba;
 sem_t *empty_ba;
 sem_t *mutex_ba;
 
+int sval;
 
 void send(const Message *message)
 {
@@ -90,6 +91,12 @@ int main()
     full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
     empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
     mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+
+    std::cout << "original sval: " << sval << std::endl;
+    sem_getvalue(empty_ba, &sval);
+    std::cout << "empty_ba value 1: " << sval << std::endl;
+
+
     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
     while (true)
     {
