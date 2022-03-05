@@ -1,9 +1,16 @@
 1.
 Named pipe:
-Message queues:
-Sockets:
+As named pipe(FIFO) is a kind of file, even though the data is stored on memory,
+reading from FIFO or writing to it are still the system calls. The reason is that the fifo object is
+manipulated by the kernel. And the data must be copied between user space and kernel space.
+
+Slow speed factor: system call, unnecessary data copying.
+Shared memory can solve these, though synchronization and security is kind of cost. That's a trade-off.
+
 Shared memory:
 Once the memory is mapped into the address space of the processes that are sharing the memory region,
 processes do not execute any system calls into the kernel in passing data between processes. The copying
-of message data is eliminated.
+of data is also eliminated.
 Semaphores is used to synchronize shared memory between processes.
+
+Message queue and socket also require system calls to pass data that may not help in our case.
