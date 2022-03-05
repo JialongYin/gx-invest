@@ -19,28 +19,6 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/shm.h>
-#include <semaphore.h>
-#include <fcntl.h>
-
-extern sem_t empty_ab;
-extern sem_t full_ab;
-extern sem_t mutex_ab;
-extern sem_t empty_ba;
-extern sem_t full_ba;
-extern sem_t mutex_ba;
-
-void deepCopy(Message *str, const Message *message) {
-    str->t = message->t;
-    str->size = message->size;
-    str->checksum = message->checksum;
-    int *ps = (int *)(s->payload);
-    int *pm = (int *)(message->payload);
-    for (auto i = message->payload_size() / 4; i; --i) {
-        *ps++ = *pm++;
-    }
-}
-
 
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
