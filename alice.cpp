@@ -137,14 +137,17 @@ void record(const Message *m)
 
 
 void deepCopy(Message *str, const Message *message) {
+    // std::cout << "deepCopy 1" << std::endl;
     str->t = message->t;
+    // std::cout << "deepCopy 2" << std::endl;
     str->size = message->size;
     str->checksum = message->checksum;
-    int *ps = (int *)(s->payload);
+    int *ps = (int *)(str->payload);
     int *pm = (int *)(message->payload);
     for (auto i = message->payload_size() / 4; i; --i) {
         *ps++ = *pm++;
     }
+    // std::cout << "deepCopy 3" << std::endl;
 }
 
 
