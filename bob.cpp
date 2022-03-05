@@ -1,15 +1,15 @@
 #include "common.h"
 
 
-sem_t *full_ab;
-sem_t *empty_ab;
-sem_t *mutex_ab;
-
-sem_t *full_ba;
-sem_t *empty_ba;
-sem_t *mutex_ba;
-
-int sval;
+// sem_t *full_ab;
+// sem_t *empty_ab;
+// sem_t *mutex_ab;
+//
+// sem_t *full_ba;
+// sem_t *empty_ba;
+// sem_t *mutex_ba;
+//
+// int sval;
 
 void send(const Message *message)
 {

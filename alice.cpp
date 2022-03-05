@@ -148,15 +148,15 @@ void record(const Message *m)
 // }
 
 
-sem_t *empty_ab;
-sem_t *full_ab;
-sem_t *mutex_ab;
-
-sem_t *empty_ba;
-sem_t *full_ba;
-sem_t *mutex_ba;
-
-int sval;
+// sem_t *empty_ab;
+// sem_t *full_ab;
+// sem_t *mutex_ab;
+//
+// sem_t *empty_ba;
+// sem_t *full_ba;
+// sem_t *mutex_ba;
+//
+// int sval;
 // sem_getvalue(full_ba, &sval);
 // printf("full_ba value 0: %d\n", sval);
 // std::cout << "full_ba value 1: " << sval << std::endl;
