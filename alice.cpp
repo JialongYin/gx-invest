@@ -157,8 +157,8 @@ sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
 sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
 int sval;
-sem_getvalue(full_ba, &sval);
-printf("full_ba value 0: %d\n", sval);
+// sem_getvalue(full_ba, &sval);
+// printf("full_ba value 0: %d\n", sval);
 // std::cout << "full_ba value 1: " << sval << std::endl;
 
 void send(const Message *message)
