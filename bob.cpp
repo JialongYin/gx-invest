@@ -80,6 +80,7 @@ int main()
     while (true)
     {
         // std::cout << "bob: before recv" << std::endl;
+        if () exit(0);
         const Message *m1 = recv();
         assert(m1->checksum == crc32(m1));
         memcpy(m2, m1, m1->size); // 拷贝m1至m2
