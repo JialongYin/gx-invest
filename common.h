@@ -22,7 +22,6 @@
 #include <sys/shm.h>
 #include <semaphore.h>
 #include <fcntl.h>
-#include <pthread.h>
 
 // extern sem_t empty_ab;
 // extern sem_t full_ab;
