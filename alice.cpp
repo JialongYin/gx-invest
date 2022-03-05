@@ -169,11 +169,11 @@ void send(const Message *message)
         str = (Message*) shmat(shmid,(void*)0,0);
         assert(str != (void *)-1);
     }
-    sem_wait(&empty_ab);
-    sem_wait(&mutex_ab);
+    sem_wait(empty_ab);
+    sem_wait(mutex_ab);
     deepCopy(str, message);
-    sem_post(&mutex_ab);
-    sem_post(&full_ab);
+    sem_post(mutex_ab);
+    sem_post(full_ab);
 }
 
 const Message *recv()
@@ -202,25 +202,25 @@ const Message *recv()
         assert(str != (void *)-1);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    sem_wait(&empty_ba);
-    sem_wait(&mutex_ba);
+    sem_wait(empty_ba);
+    sem_wait(mutex_ba);
     deepCopy(m, str);
-    sem_post(&mutex_ba);
-    sem_post(&full_ba);
+    sem_post(mutex_ba);
+    sem_post(full_ba);
     return m;
 
 }
 
 int main()
 {
-    sem_t empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-    sem_t full_ab = sem_open("/full_ab", O_CREAT, 0644, 1);
-    sem_t mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+    sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
+    sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 1);
+    sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
 
-    sem_t empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-    sem_t full_ba = sem_open("/full_ba", O_CREAT, 0644, 1);
-    sem_t mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
-    
+    sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
+    sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 1);
+    sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+
     while (true)
     {
         const Message *m1 = next_message();
