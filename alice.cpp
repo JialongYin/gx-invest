@@ -214,9 +214,12 @@ const Message *recv()
         assert(str != (void *)-1);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
+    std::cout << "alice recv 1" << std::endl;
     sem_wait(full_ba);
     sem_wait(mutex_ba);
+    std::cout << "alice recv 2" << std::endl;
     deepCopy(m, str);
+    std::cout << "alice recv 3" << std::endl;
     sem_post(mutex_ba);
     sem_post(empty_ba);
     return m;
