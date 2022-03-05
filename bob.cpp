@@ -1,13 +1,13 @@
 #include "common.h"
 
 
-sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
-sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+sem_t *full_ab;
+sem_t *empty_ab;
+sem_t *mutex_ab;
 
-sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+sem_t *full_ba;
+sem_t *empty_ba;
+sem_t *mutex_ba;
 
 
 void send(const Message *message)
@@ -32,9 +32,12 @@ void send(const Message *message)
         str = (Message*) shmat(shmid,(void*)0,0);
         assert(str != (void *)-1);
     }
+    std::cout << "bob send 1" << std::endl;
     sem_wait(empty_ba);
     sem_wait(mutex_ba);
+    std::cout << "bob send 2" << std::endl;
     deepCopy(str, message);
+    std::cout << "bob send 3" << std::endl;
     sem_post(mutex_ba);
     sem_post(full_ba);
 }
@@ -66,9 +69,12 @@ const Message *recv()
         assert(str != (void *)-1);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
+    std::cout << "bob recv 1" << std::endl;
     sem_wait(full_ab);
     sem_wait(mutex_ab);
+    std::cout << "bob recv 2" << std::endl;
     deepCopy(m, str);
+    std::cout << "bob recv 3" << std::endl;
     sem_post(mutex_ab);
     sem_post(empty_ab);
     return m;
@@ -76,6 +82,14 @@ const Message *recv()
 
 int main()
 {
+
+    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
+    empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
+    mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+
+    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
+    empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
+    mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
     while (true)
     {
