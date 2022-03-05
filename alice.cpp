@@ -238,8 +238,8 @@ const Message *recv()
 int main()
 {
 
-    // full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
+    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
+    // full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
 
     empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
     mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
@@ -247,14 +247,14 @@ int main()
     mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
     std::cout << "original sval: " << sval << std::endl;
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 1: " << sval << std::endl;
-    // sem_wait(full_ba);
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 2: " << sval << std::endl;
+    sem_getvalue(full_ba, &sval);
+    std::cout << "full_ba value 1: " << sval << std::endl;
+    sem_wait(full_ba);
+    sem_getvalue(full_ba, &sval);
+    std::cout << "full_ba value 2: " << sval << std::endl;
 
-    sem_getvalue(full_ab, &sval);
-    std::cout << "full_ab value 1: " << sval << std::endl;
+    // sem_getvalue(full_ab, &sval);
+    // std::cout << "full_ab value 1: " << sval << std::endl;
 
     // sem_getvalue(empty_ab, &sval);
     // std::cout << "empty_ab value 1: " << sval << std::endl;
