@@ -148,13 +148,13 @@ void record(const Message *m)
 // }
 
 
-sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
-sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+sem_t *empty_ab;
+sem_t *full_ab;
+sem_t *mutex_ab;
 
-sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+sem_t *empty_ba;
+sem_t *full_ba;
+sem_t *mutex_ba;
 
 int sval;
 // sem_getvalue(full_ba, &sval);
@@ -237,6 +237,15 @@ const Message *recv()
 
 int main()
 {
+
+    empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
+    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
+    mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+
+    empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
+    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
+    mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+
     sem_getvalue(full_ba, &sval);
     std::cout << "full_ba value 1: " << sval << std::endl;
     while (true)
