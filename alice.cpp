@@ -156,6 +156,10 @@ sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
 sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
 sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
+int sval;
+sem_getvalue(full_ba, &sval);
+std::cout << "full_ba value 1: " << sval << std::endl;
+
 void send(const Message *message)
 {
     // static int fifo = 0;
@@ -216,9 +220,8 @@ const Message *recv()
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     std::cout << "alice recv 1" << std::endl;
 
-    int sval;
     sem_getvalue(full_ba, &sval);
-    std::cout << "full_ba value: " << sval << std::endl;
+    std::cout << "full_ba value 3: " << sval << std::endl;
 
     sem_wait(full_ba);
     sem_wait(mutex_ba);
@@ -235,6 +238,8 @@ int main()
 {
     while (true)
     {
+        sem_getvalue(full_ba, &sval);
+        std::cout << "full_ba value 2: " << sval << std::endl;
         const Message *m1 = next_message();
         if (m1)
         {
