@@ -54,7 +54,7 @@ std::deque<std::pair<time_t, int>> generate()
         {5 * SECOND_TO_NANO + 555 * MILLI_TO_NANO + 555 * MICRO_TO_NANO, MESSAGE_SIZES[4]},
     };
     int init_size = c.size();
-    const int repeat = 10; // 重复若干次
+    const int repeat = 1; // 重复若干次
     for (int i = 1; i <= repeat; ++i)
         for (int j = 0; j < init_size; ++j)
             c.push_back(std::make_pair(c[j].first + 6 * SECOND_TO_NANO * i, c[j].second));
