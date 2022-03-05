@@ -183,12 +183,12 @@ void send(const Message *message)
         str = (Message*) shmat(shmid,(void*)0,0);
         assert(str != (void *)-1);
     }
-    std::cout << "alice send 1" << std::endl;
+    // std::cout << "alice send 1" << std::endl;
     sem_wait(empty_ab);
     sem_wait(mutex_ab);
-    std::cout << "alice send 2" << std::endl;
+    // std::cout << "alice send 2" << std::endl;
     deepCopy(str, message);
-    std::cout << "alice send 3" << std::endl;
+    // std::cout << "alice send 3" << std::endl;
     sem_post(mutex_ab);
     sem_post(full_ab);
 }
@@ -219,16 +219,16 @@ const Message *recv()
         assert(str != (void *)-1);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    std::cout << "alice recv 1" << std::endl;
+    // std::cout << "alice recv 1" << std::endl;
 
-    sem_getvalue(full_ba, &sval);
-    std::cout << "full_ba value 2: " << sval << std::endl;
+    // sem_getvalue(full_ba, &sval);
+    // std::cout << "full_ba value 2: " << sval << std::endl;
 
     sem_wait(full_ba);
     sem_wait(mutex_ba);
-    std::cout << "alice recv 2" << std::endl;
+    // std::cout << "alice recv 2" << std::endl;
     deepCopy(m, str);
-    std::cout << "alice recv 3" << std::endl;
+    // std::cout << "alice recv 3" << std::endl;
     sem_post(mutex_ba);
     sem_post(empty_ba);
     return m;
@@ -247,15 +247,15 @@ int main()
     empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
     mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
-    std::cout << "original sval: " << sval << std::endl;
-    sem_getvalue(full_ba, &sval);
-    std::cout << "full_ba value 1: " << sval << std::endl;
+    // std::cout << "original sval: " << sval << std::endl;
+    // sem_getvalue(full_ba, &sval);
+    // std::cout << "full_ba value 1: " << sval << std::endl;
     // sem_wait(full_ba);
     // sem_getvalue(full_ba, &sval);
     // std::cout << "full_ba value 2: " << sval << std::endl;
 
-    sem_getvalue(full_ab, &sval);
-    std::cout << "full_ab value 1: " << sval << std::endl;
+    // sem_getvalue(full_ab, &sval);
+    // std::cout << "full_ab value 1: " << sval << std::endl;
 
     // sem_getvalue(empty_ab, &sval);
     // std::cout << "empty_ab value 1: " << sval << std::endl;
@@ -266,9 +266,9 @@ int main()
         const Message *m1 = next_message();
         if (m1)
         {
-            std::cout << "alice: before send" << std::endl;
+            // std::cout << "alice: before send" << std::endl;
             send(m1);
-            std::cout << "alice: before recv" << std::endl;
+            // std::cout << "alice: before recv" << std::endl;
             const Message *m2 = recv();
             record(m2);
         }
