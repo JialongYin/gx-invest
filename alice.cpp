@@ -220,8 +220,8 @@ const Message *recv()
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     std::cout << "alice recv 1" << std::endl;
 
-    sem_getvalue(full_ba, &sval);
-    std::cout << "full_ba value 2: " << sval << std::endl;
+    // sem_getvalue(full_ba, &sval);
+    // std::cout << "full_ba value 2: " << sval << std::endl;
 
     sem_wait(full_ba);
     sem_wait(mutex_ba);
@@ -236,10 +236,11 @@ const Message *recv()
 
 int main()
 {
+    sem_getvalue(full_ba, &sval);
+    std::cout << "full_ba value 1: " << sval << std::endl;
     while (true)
     {
-        sem_getvalue(full_ba, &sval);
-        std::cout << "full_ba value 1: " << sval << std::endl;
+
         const Message *m1 = next_message();
         if (m1)
         {
