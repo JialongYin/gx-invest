@@ -215,10 +215,10 @@ const Message *recv()
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     std::cout << "alice recv 1" << std::endl;
-    
-    int restrict sval;
+
+    int sval;
     sem_getvalue(full_ba, &sval);
-    std::cout << sval << std::endl;
+    std::cout << "full_ba value: " << sval << std::endl;
 
     sem_wait(full_ba);
     sem_wait(mutex_ba);
