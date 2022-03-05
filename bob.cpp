@@ -79,13 +79,13 @@ int main()
     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
     while (true)
     {
-        std::cout << "bob: before recv" << std::endl;
+        // std::cout << "bob: before recv" << std::endl;
         const Message *m1 = recv();
         assert(m1->checksum == crc32(m1));
         memcpy(m2, m1, m1->size); // 拷贝m1至m2
         m2->payload[0]++;         // 第一个字符加一
         m2->checksum = crc32(m2); // 更新校验和
-        std::cout << "bob: before send" << std::endl;
+        // std::cout << "bob: before send" << std::endl;
         send(m2);
     }
 
