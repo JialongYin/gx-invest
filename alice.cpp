@@ -221,8 +221,8 @@ const Message *recv()
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     std::cout << "alice recv 1" << std::endl;
 
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 2: " << sval << std::endl;
+    sem_getvalue(full_ba, &sval);
+    std::cout << "full_ba value 2: " << sval << std::endl;
 
     sem_wait(full_ba);
     sem_wait(mutex_ba);
@@ -260,25 +260,25 @@ int main()
     // sem_getvalue(empty_ab, &sval);
     // std::cout << "empty_ab value 1: " << sval << std::endl;
 
-    // while (true)
-    // {
-    //
-    //     const Message *m1 = next_message();
-    //     if (m1)
-    //     {
-    //         std::cout << "alice: before send" << std::endl;
-    //         send(m1);
-    //         std::cout << "alice: before recv" << std::endl;
-    //         const Message *m2 = recv();
-    //         record(m2);
-    //     }
-    //     else
-    //     {
-    //         time_t dt = now() - test_cases.front().first;
-    //         timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
-    //         nanosleep(&req, &rem); // 等待到下一条消息的发送时间
-    //     }
-    // }
+    while (true)
+    {
+
+        const Message *m1 = next_message();
+        if (m1)
+        {
+            std::cout << "alice: before send" << std::endl;
+            send(m1);
+            std::cout << "alice: before recv" << std::endl;
+            const Message *m2 = recv();
+            record(m2);
+        }
+        else
+        {
+            time_t dt = now() - test_cases.front().first;
+            timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
+            nanosleep(&req, &rem); // 等待到下一条消息的发送时间
+        }
+    }
 
     return 0;
 }
