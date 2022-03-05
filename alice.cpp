@@ -163,75 +163,75 @@ int sval;
 
 void send(const Message *message)
 {
-    // static int fifo = 0;
-    // if (fifo == 0)
-    // {
-    //     const char *filename = "alice_to_bob";
-    //     if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
-    //         mkfifo(filename, 0666);
-    //     }
-    //
-    //     fifo = open(filename, O_WRONLY);
-    //     assert(fifo != 0);
-    // }
-    // assert(write(fifo, message, message->size) == message->size);
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "alice_to_bob";
+        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
+            mkfifo(filename, 0666);
+        }
 
-    static Message *str;
-    if (str == NULL) {
-        key_t key = ftok("alice_to_bob",65);
-        int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
-        str = (Message*) shmat(shmid,(void*)0,0);
-        assert(str != (void *)-1);
+        fifo = open(filename, O_WRONLY);
+        assert(fifo != 0);
     }
-    // std::cout << "alice send 1" << std::endl;
-    sem_wait(empty_ab);
-    sem_wait(mutex_ab);
-    // std::cout << "alice send 2" << std::endl;
-    deepCopy(str, message);
-    // std::cout << "alice send 3" << std::endl;
-    sem_post(mutex_ab);
-    sem_post(full_ab);
+    assert(write(fifo, message, message->size) == message->size);
+
+    // static Message *str;
+    // if (str == NULL) {
+    //     key_t key = ftok("alice_to_bob",65);
+    //     int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
+    //     str = (Message*) shmat(shmid,(void*)0,0);
+    //     assert(str != (void *)-1);
+    // }
+    // // std::cout << "alice send 1" << std::endl;
+    // sem_wait(empty_ab);
+    // sem_wait(mutex_ab);
+    // // std::cout << "alice send 2" << std::endl;
+    // deepCopy(str, message);
+    // // std::cout << "alice send 3" << std::endl;
+    // sem_post(mutex_ab);
+    // sem_post(full_ab);
 }
 
 const Message *recv()
 {
-    // static int fifo = 0;
-    // if (fifo == 0)
-    // {
-    //     const char *filename = "bob_to_alice";
-    //     if (access(filename, F_OK)) {
-    //         mkfifo(filename, 0666);
-    //     }
-    //
-    //     fifo = open(filename, O_RDONLY);
-    //     assert(fifo != 0);
-    // }
-    // static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    // assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
-    // assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
-    // return m;
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "bob_to_alice";
+        if (access(filename, F_OK)) {
+            mkfifo(filename, 0666);
+        }
 
-    static Message *str;
-    if (str == NULL) {
-        key_t key = ftok("bob_to_alice",65);
-        int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
-        str = (Message*) shmat(shmid,(void*)0,0);
-        assert(str != (void *)-1);
+        fifo = open(filename, O_RDONLY);
+        assert(fifo != 0);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    // std::cout << "alice recv 1" << std::endl;
-
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 2: " << sval << std::endl;
-
-    sem_wait(full_ba);
-    sem_wait(mutex_ba);
-    // std::cout << "alice recv 2" << std::endl;
-    deepCopy(m, str);
-    // std::cout << "alice recv 3" << std::endl;
-    sem_post(mutex_ba);
-    sem_post(empty_ba);
+    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     return m;
+
+    // static Message *str;
+    // if (str == NULL) {
+    //     key_t key = ftok("bob_to_alice",65);
+    //     int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
+    //     str = (Message*) shmat(shmid,(void*)0,0);
+    //     assert(str != (void *)-1);
+    // }
+    // static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
+    // // std::cout << "alice recv 1" << std::endl;
+    //
+    // // sem_getvalue(full_ba, &sval);
+    // // std::cout << "full_ba value 2: " << sval << std::endl;
+    //
+    // sem_wait(full_ba);
+    // sem_wait(mutex_ba);
+    // // std::cout << "alice recv 2" << std::endl;
+    // deepCopy(m, str);
+    // // std::cout << "alice recv 3" << std::endl;
+    // sem_post(mutex_ba);
+    // sem_post(empty_ba);
+    // return m;
 
 }
 
@@ -239,13 +239,13 @@ int main()
 {
 
 
-    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
-    empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-    mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
-
-    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-    empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-    mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+    // full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
+    // empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
+    // mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+    //
+    // full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
+    // empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
+    // mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
     // std::cout << "original sval: " << sval << std::endl;
     // sem_getvalue(full_ba, &sval);
