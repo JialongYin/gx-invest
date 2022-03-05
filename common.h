@@ -59,7 +59,7 @@ struct Message
 };
 
 void deepCopy(Message *str, const Message *message) {
-    cout << "str: " << str << std::endl;
+    std::cout << "str: " << str << std::endl;
     if (str == NULL) exit(0);
     // std::cout << "deepCopy 1" << std::endl;
     str->t = message->t;
