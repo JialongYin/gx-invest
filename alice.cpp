@@ -178,12 +178,12 @@ void send(const Message *message)
         str = (Message*) shmat(shmid,(void*)0,0);
         assert(str != (void *)-1);
     }
-    std::cout << "alice send 1" << std::endl;
+    // std::cout << "alice send 1" << std::endl;
     sem_wait(empty_ab);
     sem_wait(mutex_ab);
-    std::cout << "alice send 2" << std::endl;
+    // std::cout << "alice send 2" << std::endl;
     deepCopy(str, message);
-    std::cout << "alice send 3" << std::endl;
+    // std::cout << "alice send 3" << std::endl;
     sem_post(mutex_ab);
     sem_post(full_ab);
 }
