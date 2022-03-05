@@ -240,13 +240,10 @@ int main()
 
     full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
     full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
-    
+
     empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-
     mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
-
     empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-
     mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
     std::cout << "original sval: " << sval << std::endl;
@@ -259,25 +256,25 @@ int main()
     sem_getvalue(empty_ab, &sval);
     std::cout << "empty_ab value 1: " << sval << std::endl;
 
-    while (true)
-    {
-
-        const Message *m1 = next_message();
-        if (m1)
-        {
-            std::cout << "alice: before send" << std::endl;
-            send(m1);
-            std::cout << "alice: before recv" << std::endl;
-            const Message *m2 = recv();
-            record(m2);
-        }
-        else
-        {
-            time_t dt = now() - test_cases.front().first;
-            timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
-            nanosleep(&req, &rem); // 等待到下一条消息的发送时间
-        }
-    }
+    // while (true)
+    // {
+    //
+    //     const Message *m1 = next_message();
+    //     if (m1)
+    //     {
+    //         std::cout << "alice: before send" << std::endl;
+    //         send(m1);
+    //         std::cout << "alice: before recv" << std::endl;
+    //         const Message *m2 = recv();
+    //         record(m2);
+    //     }
+    //     else
+    //     {
+    //         time_t dt = now() - test_cases.front().first;
+    //         timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
+    //         nanosleep(&req, &rem); // 等待到下一条消息的发送时间
+    //     }
+    // }
 
     return 0;
 }
