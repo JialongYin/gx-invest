@@ -30,6 +30,7 @@ extern sem_t empty_ba;
 extern sem_t full_ba;
 extern sem_t mutex_ba;
 
+struct Message;
 void deepCopy(Message *str, const Message *message) {
     str->t = message->t;
     str->size = message->size;
