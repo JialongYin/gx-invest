@@ -136,25 +136,34 @@ void record(const Message *m)
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
 
-// void deepCopy(Message *str, const Message *message) {
-//     str->t = message->t;
-//     str->size = message->size;
-//     str->checksum = message->checksum;
-//     int *ps = (int *)(s->payload);
-//     int *pm = (int *)(message->payload);
-//     for (auto i = message->payload_size() / 4; i; --i) {
-//         *ps++ = *pm++;
-//     }
-// }
+void deepCopy(Message *str, const Message *message) {
+    str->t = message->t;
+    str->size = message->size;
+    str->checksum = message->checksum;
+    int *ps = (int *)(s->payload);
+    int *pm = (int *)(message->payload);
+    for (auto i = message->payload_size() / 4; i; --i) {
+        *ps++ = *pm++;
+    }
+}
 
 
-sem_t *empty_ab;
-sem_t *full_ab;
-sem_t *mutex_ab;
+// sem_t *empty_ab;
+// sem_t *full_ab;
+// sem_t *mutex_ab;
+//
+// sem_t *empty_ba;
+// sem_t *full_ba;
+// sem_t *mutex_ba;
 
-sem_t *empty_ba;
-sem_t *full_ba;
-sem_t *mutex_ba;
+sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
+sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
+sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+
+sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
+sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
+sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+
 //
 // int sval;
 // sem_getvalue(full_ba, &sval);
@@ -239,13 +248,7 @@ int main()
 {
 
 
-    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
-    empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-    mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
 
-    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-    empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-    mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
     // std::cout << "original sval: " << sval << std::endl;
     // sem_getvalue(full_ba, &sval);

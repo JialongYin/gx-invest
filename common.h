@@ -58,20 +58,6 @@ struct Message
     size_t payload_size() const { return size - sizeof(Message); }
 };
 
-void deepCopy(Message *str, const Message *message) {
-    // std::cout << "deepCopy 1" << std::endl;
-    str->t = message->t;
-    // std::cout << "deepCopy 2" << std::endl;
-    str->size = message->size;
-    str->checksum = message->checksum;
-    int *ps = (int *)(str->payload);
-    int *pm = (int *)(message->payload);
-    for (auto i = message->payload_size() / 4; i; --i) {
-        *ps++ = *pm++;
-    }
-    // std::cout << "deepCopy 3" << std::endl;
-}
-
 // CRC32校验码计算，用于检查消息正确性
 const unsigned int crc32_table[] = {
     0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
