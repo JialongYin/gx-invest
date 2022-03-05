@@ -238,11 +238,12 @@ const Message *recv()
 int main()
 {
 
-    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
 
+    full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
     empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
     mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+
+    full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
     empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
     mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
 
