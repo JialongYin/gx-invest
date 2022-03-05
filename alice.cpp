@@ -266,7 +266,7 @@ int main()
         const Message *m1 = next_message();
         if (m1)
         {
-            // std::cout << "alice: before send" << std::endl;
+            std::cout << "alice: before send" << std::endl;
             send(m1);
             // std::cout << "alice: before recv" << std::endl;
             const Message *m2 = recv();

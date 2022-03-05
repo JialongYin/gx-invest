@@ -79,7 +79,7 @@ int main()
     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
     while (true)
     {
-        // std::cout << "bob: before recv" << std::endl;
+        std::cout << "bob: before recv" << std::endl;
         // if () exit(0);
         const Message *m1 = recv();
         // std::cout << "bob: after recv" << std::endl;
