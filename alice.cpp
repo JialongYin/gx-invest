@@ -178,6 +178,7 @@ void send(const Message *message)
         str = (Message*) shmat(shmid,(void*)0,0);
         assert(str != (void *)-1);
     }
+    std::cout << "alice send" << std::endl;
     sem_wait(empty_ab);
     sem_wait(mutex_ab);
     deepCopy(str, message);
