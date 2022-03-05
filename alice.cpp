@@ -249,12 +249,15 @@ int main()
     std::cout << "original sval: " << sval << std::endl;
     sem_getvalue(full_ba, &sval);
     std::cout << "full_ba value 1: " << sval << std::endl;
+    sem_wait(full_ba);
+    sem_getvalue(full_ba, &sval);
+    std::cout << "full_ba value 2: " << sval << std::endl;
 
     sem_getvalue(full_ab, &sval);
     std::cout << "full_ab value 1: " << sval << std::endl;
 
-    sem_getvalue(empty_ab, &sval);
-    std::cout << "empty_ab value 1: " << sval << std::endl;
+    // sem_getvalue(empty_ab, &sval);
+    // std::cout << "empty_ab value 1: " << sval << std::endl;
 
     // while (true)
     // {
