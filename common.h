@@ -59,7 +59,9 @@ struct Message
 };
 
 void deepCopy(Message *str, const Message *message) {
+    std::cout << "deepCopy 1" << std::endl;
     str->t = message->t;
+    std::cout << "deepCopy 2" << std::endl;
     str->size = message->size;
     str->checksum = message->checksum;
     int *ps = (int *)(str->payload);
@@ -67,6 +69,7 @@ void deepCopy(Message *str, const Message *message) {
     for (auto i = message->payload_size() / 4; i; --i) {
         *ps++ = *pm++;
     }
+    std::cout << "deepCopy 3" << std::endl;
 }
 
 // CRC32校验码计算，用于检查消息正确性
