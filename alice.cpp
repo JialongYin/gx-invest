@@ -276,13 +276,17 @@ int main()
             send(m1);
             std::cout << "alice after send" << std::endl;
             const Message *m2 = recv();
-            std::cout << "alice after recv: " << std::endl;
+            std::cout << "alice after recv" << std::endl;
 
             /*Blocking FIFO*/
             // record(m2);
             /*Non-blocking FIFO*/
-            if (m2 != nullptr)
+            if (m2 != nullptr) {
+                std::cout << "alice after recv: " << m2->size << std::endl;
                 record(m2);
+            }
+
+
 
         }
         else
