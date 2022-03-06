@@ -163,22 +163,22 @@ void send(const Message *message)
         }
 
         /*Blocking FIFO*/
-        // fifo = open(filename, O_WRONLY);
+        fifo = open(filename, O_WRONLY);
         /*Non-blocking FIFO*/
-        fifo = open(filename, O_WRONLY | O_NONBLOCK);
+        // fifo = open(filename, O_WRONLY | O_NONBLOCK);
 
         assert(fifo != 0);
     }
 
     /*Blocking FIFO*/
-    // assert(write(fifo, message, message->size) == message->size);
+    assert(write(fifo, message, message->size) == message->size);
     /*Non-blocking FIFO*/
-    if ((bytew = write(fifo, message, message->size)) == -1) {
+    // if ((bytew = write(fifo, message, message->size)) == -1) {
         // std::cout << "alice send: " << bytew << std::endl;
-        return;
+        // return;
     }
     // std::cout << "alice send: " << bytew << std::endl;
-    assert(bytew == message->size);
+    // assert(bytew == message->size);
 
 }
 const Message *recv()
@@ -192,22 +192,22 @@ const Message *recv()
         }
 
         /*Blocking FIFO*/
-        // fifo = open(filename, O_RDONLY);
+        fifo = open(filename, O_RDONLY);
         /*Non-blocking FIFO*/
-        fifo = open(filename, O_RDONLY | O_NONBLOCK);
+        // fifo = open(filename, O_RDONLY | O_NONBLOCK);
 
         assert(fifo != 0);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
 
     /*Blocking FIFO*/
-    // assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
-    // assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
+    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     /*Non-blocking FIFO*/
-    if ((byter = read(fifo, m, m->size)) == -1) {
-        return nullptr;
-    }
-    assert(byter == m->size);
+    // if ((byter = read(fifo, m, m->size)) == -1) {
+        // return nullptr;
+    // }
+    // assert(byter == m->size);
 
     return m;
 }
@@ -269,41 +269,66 @@ const Message *recv()
 //     return m;
 // }
 
+// int main()
+// {
+//
+//     /*Non-blocking FIFO*/
+//     const Message *m1;
+//
+//     // while (true)
+//     // {
+//
+//         /*Blocking FIFO*/
+//         // const Message *m1 = next_message();
+//         /*Non-blocking FIFO*/
+//         std::cout << "alice before next_message" << std::endl;
+//         if (bytew != -1)
+//             m1 = next_message();
+//
+//         std::cout << "alice before if" << std::endl;
+//         if (m1)
+//         {
+//             std::cout << "alice before send" << std::endl;
+//             send(m1);
+//             std::cout << "alice after send: " << bytew << std::endl;
+//             const Message *m2 = recv();
+//             std::cout << "alice after recv: " << byter << std::endl;
+//
+//             /*Blocking FIFO*/
+//             // record(m2);
+//             /*Non-blocking FIFO*/
+//             if (m2 != nullptr) {
+//                 // std::cout << "alice before record: " << m2->size << std::endl;
+//                 record(m2);
+//             }
+//
+//
+//
+//         }
+//         else
+//         {
+//             time_t dt = now() - test_cases.front().first;
+//             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
+//             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
+//         }
+//     // }
+//
+//     return 0;
+// }
+
+
+/*Blocking FIFO*/
 int main()
 {
+    while (true)
+    {
 
-    /*Non-blocking FIFO*/
-    const Message *m1;
-
-    // while (true)
-    // {
-
-        /*Blocking FIFO*/
-        // const Message *m1 = next_message();
-        /*Non-blocking FIFO*/
-        std::cout << "alice before next_message" << std::endl;
-        if (bytew != -1)
-            m1 = next_message();
-
-        std::cout << "alice before if" << std::endl;
+        const Message *m1 = next_message();
         if (m1)
         {
-            std::cout << "alice before send" << std::endl;
             send(m1);
-            std::cout << "alice after send: " << bytew << std::endl;
             const Message *m2 = recv();
-            std::cout << "alice after recv: " << byter << std::endl;
-
-            /*Blocking FIFO*/
-            // record(m2);
-            /*Non-blocking FIFO*/
-            if (m2 != nullptr) {
-                // std::cout << "alice before record: " << m2->size << std::endl;
-                record(m2);
-            }
-
-
-
+            record(m2);
         }
         else
         {
@@ -311,7 +336,7 @@ int main()
             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
         }
-    // }
+    }
 
     return 0;
 }
