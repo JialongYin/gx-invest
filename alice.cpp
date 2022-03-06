@@ -161,7 +161,7 @@ void send(const Message *message)
     /*Blocking FIFO*/
     // assert(write(fifo, message, message->size) == message->size);
     /*Non-blocking FIFO*/
-    if ((bytew = write(fifo, message, message->size)) == 0) {
+    if ((bytew = write(fifo, message, message->size)) == -1) {
         // std::cout << "alice send: " << bytew << std::endl;
         return;
     }
@@ -192,7 +192,7 @@ const Message *recv()
     // assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
     // assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     /*Non-blocking FIFO*/
-    if ((byter = read(fifo, m, m->size)) == 0) {
+    if ((byter = read(fifo, m, m->size)) == -1) {
         return nullptr;
     }
     assert(byter == m->size);
@@ -274,7 +274,7 @@ int main()
 
         if (m1)
         {
-            // std::cout << "alice before send" << std::endl;
+            std::cout << "alice before send" << std::endl;
             send(m1);
             std::cout << "alice after send: " << bytew << std::endl;
             const Message *m2 = recv();
