@@ -72,7 +72,7 @@ std::vector<time_t> delays;
 const Message *next_message()
 {
     // 所有测试用例均完成，打印统计结果并退出
-    std::cout << "left: " << test_cases.size() << " target: " << test_case_count << std::endl;
+    // std::cout << "left: " << test_cases.size() << " target: " << test_case_count << std::endl;
     if (delays.size() == test_case_count)
     {
         std::sort(delays.begin(), delays.end());
@@ -92,23 +92,23 @@ const Message *next_message()
         exit(0);
     }
 
-    std::cout << "pass here 1" << std::endl;
+    // std::cout << "pass here 1" << std::endl;
     // 检查下一条消息是否已经到时间
     if (test_cases.empty())
         return NULL;
-    std::cout << "pass here 2" << std::endl;
+    // std::cout << "pass here 2" << std::endl;
     auto c = test_cases.front();
 
     time_t seconds = now();
-    std::stringstream ss, tt;
-    ss << seconds;
-    tt << c.first;
-    std::string ts = ss.str(), st = tt.str();
-    std::cout << "st: " << st << " ts: " << ts << std::endl;
+    // std::stringstream ss, tt;
+    // ss << seconds;
+    // tt << c.first;
+    // std::string ts = ss.str(), st = tt.str();
+    // std::cout << "st: " << st << " ts: " << ts << std::endl;
 
     if (c.first > seconds)
         return NULL;
-    std::cout << "pass here 3" << std::endl;
+    // std::cout << "pass here 3" << std::endl;
 
     // 在堆上申请Message的临时空间，并在所有next_message的调用中复用
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
@@ -128,7 +128,7 @@ const Message *next_message()
     }
 
     m->checksum = crc32(m);
-    std::cout << "size: " << m->size << " checksum: " << m->checksum << "payload: " << m->payload << std::endl;
+    // std::cout << "size: " << m->size << " checksum: " << m->checksum << "payload: " << m->payload << std::endl;
     return m;
 }
 
