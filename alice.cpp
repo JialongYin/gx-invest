@@ -164,10 +164,10 @@ void send(const Message *message)
     }
 
     if ((bytew = write(fifo, message, message->size)) == -1) { // return -1 if no reader attached
-        // std::cout << "alice send: " << bytew << std::endl;
+        std::cout << "alice after send: " << bytew << std::endl;
         return;
     }
-    // std::cout << "alice send: " << bytew << std::endl;
+    std::cout << "alice after send: " << bytew << std::endl;
     assert(bytew == message->size);
 }
 const Message *recv()
@@ -208,7 +208,7 @@ int main()
         {
             // std::cout << "alice before send: " << bytew << std::endl;
             send(m1);
-            std::cout << "alice after send: " << bytew << std::endl;
+            // std::cout << "alice after send: " << bytew << std::endl;
             const Message *m2 = recv();
             std::cout << "alice after recv" << byter << std::endl;
             if (m2 != NULL) {
