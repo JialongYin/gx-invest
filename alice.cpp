@@ -137,7 +137,7 @@ void record(const Message *m)
 
 /*Original Named Pipe*/
 /*Non-blocking FIFO*/
-static ssize_t bytew;
+static ssize_t bytew = 0;
 
 void send(const Message *message)
 {
@@ -189,11 +189,12 @@ const Message *recv()
     // assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
     // assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     /*Non-blocking FIFO*/
-    static ssize_t byter;
+    static ssize_t byter = 0;
     if ((byter = read(fifo, m, m->size)) == -1) {
         return nullptr;
     }
     assert(byter == m->size);
+    std::cout << "alice recv: " << byter << std::endl;
 
     return m;
 }
@@ -274,15 +275,15 @@ int main()
         {
             std::cout << "alice before send" << std::endl;
             send(m1);
-            std::cout << "alice after send" << std::endl;
+            std::cout << "alice before recv" << std::endl;
             const Message *m2 = recv();
-            std::cout << "alice after recv" << std::endl;
+            // std::cout << "alice after recv" << std::endl;
 
             /*Blocking FIFO*/
             // record(m2);
             /*Non-blocking FIFO*/
             if (m2 != nullptr) {
-                std::cout << "alice after recv: " << m2->size << std::endl;
+                std::cout << "alice before record: " << m2->size << std::endl;
                 record(m2);
             }
 
