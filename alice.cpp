@@ -161,7 +161,7 @@ void send(const Message *message)
     /*Blocking FIFO*/
     // assert(write(fifo, message, message->size) == message->size);
     /*Non-blocking FIFO*/
-    if ((bytew = write(fifo, message, message->size)) == -1) {
+    if ((bytew = write(fifo, message, message->size)) == 0) {
         // std::cout << "alice send: " << bytew << std::endl;
         return;
     }
@@ -271,7 +271,7 @@ int main()
         /*Blocking FIFO*/
         // const Message *m1 = next_message();
         /*Non-blocking FIFO*/
-        if (bytew != -1)
+        if (bytew != 0)
             m1 = next_message();
 
         if (m1)
