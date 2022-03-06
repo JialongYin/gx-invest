@@ -1,21 +1,38 @@
-Named pipe:
+1.Named pipe:
 As named pipe(FIFO) is a kind of file, even though the data is stored on memory,
 reading from FIFO or writing to it are still the system calls. The reason is that the fifo object is
 manipulated by the kernel. And the data must be copied between user space and kernel space.
 
 Slow speed factor: system call, unnecessary data copying.
-Solution: shared memory can solve these, though synchronization and security is kind of cost. That's a trade-off.
+Solution: shared memory can solve these, though synchronization and security is kind of cost.
 Message queue and socket also require system calls to pass data that may not help in our case.
 
-Shared memory:
+2.Shared memory:
 Once the memory is mapped into the address space of the processes that are sharing the memory region,
 processes do not execute any system calls into the kernel in passing data between processes. The copying
 of data is also eliminated.
 Semaphores is used to synchronize shared memory between processes.
+In the code, user-defined deepCopy is implemented at first. But the OOP-style function is slow. Therefore,
+I use memcpy instead.
 
 Slow speed factor: send, recv are both blocked.
 Solution: implement non-blocking version of FIFO and shared memory. SIGPIPE signal should be catched to
 deal with one end opening.
 
+3.Non-blocking named pipe(in progress):
+Original named pipe only send message after receiving from the other end because read and write will block.
+O_NBLOCK flag can be set here to speed up message exchanging.
+
 Slow speed factor: single thread
 Solution: multiple threads can be used to send and recv. All the work can be done in parallel.
+
+4.Non-blocking shared memory(in progress):
+Shared memory implemented above can only store one message structure in the buffer. If the buffer that can
+contain 385 message structure is allocated, we can continue sending message without worrying about overwriting.
+recv in bob can be slower than send in alice.
+
+Slow speed factor: single thread
+Solution: multiple threads can be used to send and recv. All the work can be done in parallel.
+
+5.Muti-thread version of named pipe and shared memory(in progress):
+If multiple threads are created, they can send and receive data simultaneously.
