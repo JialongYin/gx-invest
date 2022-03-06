@@ -63,7 +63,10 @@ void send(const Message *message)
     }
     sem_wait(empty_ba);
     sem_wait(mutex_ba);
-    deepCopy(str, message);
+    /*User-defined deepCopy*/
+    // deepCopy(str, message);
+    /*library memory copy memcpy*/
+    memcpy (str, message, message->size);
     sem_post(mutex_ba);
     sem_post(full_ba);
 }
@@ -79,7 +82,10 @@ const Message *recv()
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     sem_wait(full_ab);
     sem_wait(mutex_ab);
-    deepCopy(m, str);
+    /*User-defined deepCopy*/
+    // deepCopy(m, str);
+    /*library memory copy memcpy*/
+    memcpy (m, str, str->size);
     sem_post(mutex_ab);
     sem_post(empty_ab);
     return m;
