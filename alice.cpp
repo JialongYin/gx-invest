@@ -117,6 +117,7 @@ const Message *next_message()
     }
 
     m->checksum = crc32(m);
+    std::cout << "size: " << m->size << " checksum: " << m->checksum << "payload: " << m->payload << std::endl;
     return m;
 }
 
