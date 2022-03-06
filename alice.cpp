@@ -176,7 +176,7 @@ void send(const Message *message)
     // if ((bytew = write(fifo, message, message->size)) == -1) {
         // std::cout << "alice send: " << bytew << std::endl;
         // return;
-    }
+    // }
     // std::cout << "alice send: " << bytew << std::endl;
     // assert(bytew == message->size);
 
