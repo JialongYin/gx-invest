@@ -257,6 +257,10 @@ const Message *recv()
 
 int main()
 {
+
+    /*Non-blocking FIFO*/
+    Message *m1;
+
     while (true)
     {
 
@@ -264,7 +268,7 @@ int main()
         // const Message *m1 = next_message();
         /*Non-blocking FIFO*/
         if (bytew != -1)
-            const Message *m1 = next_message();
+            m1 = next_message();
 
         if (m1)
         {
@@ -276,7 +280,7 @@ int main()
             /*Non-blocking FIFO*/
             if (m2 != nullptr)
                 record(m2);
-                
+
         }
         else
         {
