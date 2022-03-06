@@ -1,76 +1,7 @@
 #include "common.h"
 
 /*Non-blocking FIFO*/
-static ssize_t bytew, byter;
-void send(const Message *message)
-{
-    static int fifo = 0;
-    if (fifo == 0)
-    {
-        const char *filename = "bob_to_alice";
-        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
-            mkfifo(filename, 0666);
-        }
-        fifo = open(filename, O_WRONLY | O_NONBLOCK);
-
-        assert(fifo != 0);
-    }
-
-    // static ssize_t bytew;
-    if ((bytew = write(fifo, message, message->size)) == -1) {
-        std::cout << "bob after send: " << bytew << std::endl;
-        return;
-    }
-    std::cout << "bob after send: " << bytew << std::endl;
-    assert(bytew == message->size);
-}
-const Message *recv()
-{
-    static int fifo = 0;
-    if (fifo == 0)
-    {
-        const char *filename = "alice_to_bob";
-        if (access(filename, F_OK)) {
-            mkfifo(filename, 0666);
-        }
-        fifo = open(filename, O_RDONLY | O_NONBLOCK);
-
-        assert(fifo != 0);
-    }
-
-    static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    if ((byter = read(fifo, m, m->size)) == 0) {
-        // std::cout << "bob after recv: " << byter << std::endl;
-        return NULL;
-    }
-    std::cout << "bob after recv: " << byter << std::endl;
-    assert(byter == m->size);
-    return m;
-}
-/*Non-blocking FIFO*/
-int main()
-{
-    Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
-    // int i = 1000;
-    while (true)
-    {
-        const Message *m1 = recv();
-        // std::cout << "bob after recv: " << byter << std::endl;
-        if (m1 != NULL) {
-            std::cout << "bob after recv: " << byter << std::endl;
-            assert(m1->checksum == crc32(m1));
-            memcpy(m2, m1, m1->size); // 拷贝m1至m2
-            m2->payload[0]++;         // 第一个字符加一
-            m2->checksum = crc32(m2); // 更新校验和
-            send(m2);
-        }
-    }
-
-    return 0;
-}
-
-
-/*Blocking FIFO(Original)*/
+// static ssize_t bytew, byter;
 // void send(const Message *message)
 // {
 //     static int fifo = 0;
@@ -80,10 +11,18 @@ int main()
 //         if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
 //             mkfifo(filename, 0666);
 //         }
-//         fifo = open(filename, O_WRONLY);
+//         fifo = open(filename, O_WRONLY | O_NONBLOCK);
+//
 //         assert(fifo != 0);
 //     }
-//     assert(write(fifo, message, message->size) == message->size);
+//
+//     // static ssize_t bytew;
+//     if ((bytew = write(fifo, message, message->size)) == -1) {
+//         std::cout << "bob after send: " << bytew << std::endl;
+//         return;
+//     }
+//     std::cout << "bob after send: " << bytew << std::endl;
+//     assert(bytew == message->size);
 // }
 // const Message *recv()
 // {
@@ -94,14 +33,75 @@ int main()
 //         if (access(filename, F_OK)) {
 //             mkfifo(filename, 0666);
 //         }
-//         fifo = open(filename, O_RDONLY);
+//         fifo = open(filename, O_RDONLY | O_NONBLOCK);
+//
 //         assert(fifo != 0);
 //     }
+//
 //     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-//     assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
-//     assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
+//     if ((byter = read(fifo, m, m->size)) == 0) {
+//         // std::cout << "bob after recv: " << byter << std::endl;
+//         return NULL;
+//     }
+//     std::cout << "bob after recv: " << byter << std::endl;
+//     assert(byter == m->size);
 //     return m;
 // }
+/*Non-blocking FIFO*/
+// int main()
+// {
+//     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
+//     // int i = 1000;
+//     while (true)
+//     {
+//         const Message *m1 = recv();
+//         // std::cout << "bob after recv: " << byter << std::endl;
+//         if (m1 != NULL) {
+//             std::cout << "bob after recv: " << byter << std::endl;
+//             assert(m1->checksum == crc32(m1));
+//             memcpy(m2, m1, m1->size); // 拷贝m1至m2
+//             m2->payload[0]++;         // 第一个字符加一
+//             m2->checksum = crc32(m2); // 更新校验和
+//             send(m2);
+//         }
+//     }
+//
+//     return 0;
+// }
+
+
+/*Blocking FIFO(Original)*/
+void send(const Message *message)
+{
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "bob_to_alice";
+        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
+            mkfifo(filename, 0666);
+        }
+        fifo = open(filename, O_WRONLY);
+        assert(fifo != 0);
+    }
+    assert(write(fifo, message, message->size) == message->size);
+}
+const Message *recv()
+{
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "alice_to_bob";
+        if (access(filename, F_OK)) {
+            mkfifo(filename, 0666);
+        }
+        fifo = open(filename, O_RDONLY);
+        assert(fifo != 0);
+    }
+    static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
+    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
+    return m;
+}
 
 /*Shared Memory*/
 // sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
@@ -161,19 +161,19 @@ int main()
 // }
 
 /*Blocking FIFO(Original)*/ /*Shared Memory*/
-// int main()
-// {
-//     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
-//     while (true)
-//     {
-//         const Message *m1 = recv();
-//         assert(m1->checksum == crc32(m1));
-//         memcpy(m2, m1, m1->size); // 拷贝m1至m2
-//         m2->payload[0]++;         // 第一个字符加一
-//         m2->checksum = crc32(m2); // 更新校验和
-//         send(m2);
-//
-//     }
-//
-//     return 0;
-// }
+int main()
+{
+    Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
+    while (true)
+    {
+        const Message *m1 = recv();
+        assert(m1->checksum == crc32(m1));
+        memcpy(m2, m1, m1->size); // 拷贝m1至m2
+        m2->payload[0]++;         // 第一个字符加一
+        m2->checksum = crc32(m2); // 更新校验和
+        send(m2);
+
+    }
+
+    return 0;
+}

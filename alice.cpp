@@ -72,7 +72,7 @@ std::vector<time_t> delays;
 const Message *next_message()
 {
     // 所有测试用例均完成，打印统计结果并退出
-    std::cout << "delay: " << delays.size() << " left: " << test_cases.size() << " target: " << test_case_count << std::endl;
+    // std::cout << "delay: " << delays.size() << " left: " << test_cases.size() << " target: " << test_case_count << std::endl;
     if (delays.size() == test_case_count)
     {
         std::sort(delays.begin(), delays.end());
@@ -149,85 +149,7 @@ void record(const Message *m)
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
 /*Non-blocking FIFO*/
-static ssize_t bytew = 0, byter = 0;
-void send(const Message *message)
-{
-    static int fifo = 0;
-    if (fifo == 0)
-    {
-        const char *filename = "alice_to_bob";
-        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
-            mkfifo(filename, 0666);
-        }
-        fifo = open(filename, O_WRONLY | O_NONBLOCK);
-        assert(fifo != 0);
-    }
-
-    if ((bytew = write(fifo, message, message->size)) == -1) { // return -1 if no reader attached
-        std::cout << "alice after send: " << bytew << std::endl;
-        return;
-    }
-    std::cout << "alice after send: " << bytew << " " << "message size: " << message->size << std::endl;
-    assert(bytew == message->size);
-}
-const Message *recv()
-{
-    static int fifo = 0;
-    if (fifo == 0)
-    {
-        const char *filename = "bob_to_alice";
-        if (access(filename, F_OK)) {
-            mkfifo(filename, 0666);
-        }
-        fifo = open(filename, O_RDONLY | O_NONBLOCK);
-        assert(fifo != 0);
-    }
-
-    static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    if ((byter = read(fifo, m, m->size)) == 0) { // return 0 if no witer attached
-        // std::cout << "alice recv: " << byter << std::endl;
-        return NULL;
-    }
-    assert(byter == m->size);
-    return m;
-}
-/*Non-blocking FIFO*/
-int main()
-{
-    const Message *m1 = NULL;
-    // int i = 3500;
-    while (true)
-    {
-        // std::cout << "alice before next_message" << std::endl;
-        // while (bytew != -1 && m1 == NULL)
-        if (bytew != -1 || m1 == NULL)
-            m1 = next_message();
-
-        // std::cout << "alice before if: " << bytew << std::endl;
-        if (m1)
-        {
-            // std::cout << "alice before send: " << bytew << std::endl;
-            send(m1);
-            // std::cout << "alice after send: " << bytew << std::endl;
-            const Message *m2 = recv();
-            std::cout << "alice after recv: " << byter << std::endl;
-            if (m2 != NULL) {
-                record(m2);
-            }
-        }
-        else
-        {
-            time_t dt = now() - test_cases.front().first;
-            timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
-            nanosleep(&req, &rem); // 等待到下一条消息的发送时间
-        }
-    }
-
-    return 0;
-}
-
-
-/*Blocking FIFO(Original)*/
+// static ssize_t bytew = 0, byter = 0;
 // void send(const Message *message)
 // {
 //     static int fifo = 0;
@@ -237,10 +159,16 @@ int main()
 //         if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
 //             mkfifo(filename, 0666);
 //         }
-//         fifo = open(filename, O_WRONLY);
+//         fifo = open(filename, O_WRONLY | O_NONBLOCK);
 //         assert(fifo != 0);
 //     }
-//     assert(write(fifo, message, message->size) == message->size);
+//
+//     if ((bytew = write(fifo, message, message->size)) == -1) { // return -1 if no reader attached
+//         std::cout << "alice after send: " << bytew << std::endl;
+//         return;
+//     }
+//     std::cout << "alice after send: " << bytew << " " << "message size: " << message->size << std::endl;
+//     assert(bytew == message->size);
 // }
 // const Message *recv()
 // {
@@ -251,14 +179,86 @@ int main()
 //         if (access(filename, F_OK)) {
 //             mkfifo(filename, 0666);
 //         }
-//         fifo = open(filename, O_RDONLY);
+//         fifo = open(filename, O_RDONLY | O_NONBLOCK);
 //         assert(fifo != 0);
 //     }
+//
 //     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-//     assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
-//     assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
+//     if ((byter = read(fifo, m, m->size)) == 0) { // return 0 if no witer attached
+//         // std::cout << "alice recv: " << byter << std::endl;
+//         return NULL;
+//     }
+//     assert(byter == m->size);
 //     return m;
 // }
+// /*Non-blocking FIFO*/
+// int main()
+// {
+//     const Message *m1 = NULL;
+//     // int i = 3500;
+//     while (true)
+//     {
+//         // std::cout << "alice before next_message" << std::endl;
+//         // while (bytew != -1 && m1 == NULL)
+//         if (bytew != -1 || m1 == NULL)
+//             m1 = next_message();
+//
+//         // std::cout << "alice before if: " << bytew << std::endl;
+//         if (m1)
+//         {
+//             // std::cout << "alice before send: " << bytew << std::endl;
+//             send(m1);
+//             // std::cout << "alice after send: " << bytew << std::endl;
+//             const Message *m2 = recv();
+//             std::cout << "alice after recv: " << byter << std::endl;
+//             if (m2 != NULL) {
+//                 record(m2);
+//             }
+//         }
+//         else
+//         {
+//             time_t dt = now() - test_cases.front().first;
+//             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
+//             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
+//         }
+//     }
+//
+//     return 0;
+// }
+
+
+/*Blocking FIFO(Original)*/
+void send(const Message *message)
+{
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "alice_to_bob";
+        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
+            mkfifo(filename, 0666);
+        }
+        fifo = open(filename, O_WRONLY);
+        assert(fifo != 0);
+    }
+    assert(write(fifo, message, message->size) == message->size);
+}
+const Message *recv()
+{
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "bob_to_alice";
+        if (access(filename, F_OK)) {
+            mkfifo(filename, 0666);
+        }
+        fifo = open(filename, O_RDONLY);
+        assert(fifo != 0);
+    }
+    static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
+    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
+    return m;
+}
 
 /*Shared Memory*/
 // sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
@@ -318,25 +318,25 @@ int main()
 // }
 
 /*Blocking FIFO(Original)*/ /*Shared Memory*/
-// int main()
-// {
-//     while (true)
-//     {
-//
-//         const Message *m1 = next_message();
-//         if (m1)
-//         {
-//             send(m1);
-//             const Message *m2 = recv();
-//             record(m2);
-//         }
-//         else
-//         {
-//             time_t dt = now() - test_cases.front().first;
-//             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
-//             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
-//         }
-//     }
-//
-//     return 0;
-// }
+int main()
+{
+    while (true)
+    {
+
+        const Message *m1 = next_message();
+        if (m1)
+        {
+            send(m1);
+            const Message *m2 = recv();
+            record(m2);
+        }
+        else
+        {
+            time_t dt = now() - test_cases.front().first;
+            timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
+            nanosleep(&req, &rem); // 等待到下一条消息的发送时间
+        }
+    }
+
+    return 0;
+}
