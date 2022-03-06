@@ -167,6 +167,7 @@ void send(const Message *message)
         // std::cout << "alice send: " << bytew << std::endl;
         return;
     }
+    // std::cout << "alice send: " << bytew << std::endl;
     assert(bytew == message->size);
 }
 const Message *recv()
@@ -194,7 +195,7 @@ const Message *recv()
 int main()
 {
     const Message *m1 = NULL;
-    int i = 100;
+    int i = 10000;
     while (i--)
     {
         // std::cout << "alice before next_message" << std::endl;
