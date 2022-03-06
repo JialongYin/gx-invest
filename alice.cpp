@@ -275,9 +275,9 @@ int main()
 
         if (m1)
         {
-            std::cout << "alice before send" << std::endl;
+            // std::cout << "alice before send" << std::endl;
             send(m1);
-            std::cout << "alice before recv" << std::endl;
+            // std::cout << "alice before recv" << std::endl;
             const Message *m2 = recv();
             // std::cout << "alice after recv" << std::endl;
 
@@ -285,7 +285,7 @@ int main()
             // record(m2);
             /*Non-blocking FIFO*/
             if (m2 != nullptr) {
-                std::cout << "alice before record: " << m2->size << std::endl;
+                // std::cout << "alice before record: " << m2->size << std::endl;
                 record(m2);
             }
 
