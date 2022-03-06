@@ -72,7 +72,7 @@ std::vector<time_t> delays;
 const Message *next_message()
 {
     // 所有测试用例均完成，打印统计结果并退出
-    std::cout << "left: " << test_cases.size() << " target: " << test_case_count << std::endl;
+    std::cout << "delay: " << delays.size() << " left: " << test_cases.size() << " target: " << test_case_count << std::endl;
     if (delays.size() == test_case_count)
     {
         std::sort(delays.begin(), delays.end());
