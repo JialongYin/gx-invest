@@ -163,8 +163,8 @@ void send(const Message *message)
         assert(fifo != 0);
     }
 
-    if ((bytew = write(fifo, message, message->size)) == -1) {
-        std::cout << "alice send: " << bytew << std::endl;
+    if ((bytew = write(fifo, message, message->size)) == -1) { // return -1 if no reader attached
+        // std::cout << "alice send: " << bytew << std::endl;
         return;
     }
     assert(bytew == message->size);
@@ -183,33 +183,33 @@ const Message *recv()
     }
 
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    if ((byter = read(fifo, m, m->size)) == 0) {
-        std::cout << "alice recv: " << byter << std::endl;
+    if ((byter = read(fifo, m, m->size)) == 0) { // return 0 if no witer attached
+        // std::cout << "alice recv: " << byter << std::endl;
         return NULL;
     }
     assert(byter == m->size);
     return m;
 }
-
 /*Non-blocking FIFO*/
 int main()
 {
     const Message *m1 = NULL;
 
-    // while (true)
-    // {
+    while (true)
+    {
         // std::cout << "alice before next_message" << std::endl;
-        while (bytew != -1 && m1 == NULL)
+        // while (bytew != -1 && m1 == NULL)
+        if (m1 == NULL)
             m1 = next_message();
 
         // std::cout << "alice before if" << std::endl;
         if (m1)
         {
-            std::cout << "alice before send" << std::endl;
+            // std::cout << "alice before send" << std::endl;
             send(m1);
-            std::cout << "alice after send" << std::endl;
+            // std::cout << "alice after send" << std::endl;
             const Message *m2 = recv();
-            std::cout << "alice after recv" << std::endl;
+            // std::cout << "alice after recv" << std::endl;
             if (m2 != NULL) {
                 record(m2);
             }
@@ -220,7 +220,7 @@ int main()
             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
         }
-    // }
+    }
 
     return 0;
 }
