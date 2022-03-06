@@ -167,7 +167,7 @@ void send(const Message *message)
         std::cout << "alice after send: " << bytew << std::endl;
         return;
     }
-    std::cout << "alice after send: " << bytew << std::endl;
+    std::cout << "alice after send: " << bytew << " " << "message size: " << message->size << std::endl;
     assert(bytew == message->size);
 }
 const Message *recv()
@@ -210,7 +210,7 @@ int main()
             send(m1);
             // std::cout << "alice after send: " << bytew << std::endl;
             const Message *m2 = recv();
-            std::cout << "alice after recv" << byter << std::endl;
+            std::cout << "alice after recv: " << byter << std::endl;
             if (m2 != NULL) {
                 record(m2);
             }

@@ -57,7 +57,7 @@ int main()
         const Message *m1 = recv();
         // std::cout << "bob after recv: " << byter << std::endl;
         if (m1 != NULL) {
-            // std::cout << "pass here" << std::endl;
+            std::cout << "bob after recv: " << byter << std::endl;
             assert(m1->checksum == crc32(m1));
             memcpy(m2, m1, m1->size); // 拷贝m1至m2
             m2->payload[0]++;         // 第一个字符加一
