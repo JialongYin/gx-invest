@@ -203,14 +203,14 @@ int main()
         if (bytew != -1 || m1 == NULL)
             m1 = next_message();
 
-        std::cout << "alice before if: " << bytew << std::endl;
+        // std::cout << "alice before if: " << bytew << std::endl;
         if (m1)
         {
-            // std::cout << "alice before send" << std::endl;
+            // std::cout << "alice before send: " << bytew << std::endl;
             send(m1);
-            // std::cout << "alice after send" << std::endl;
+            std::cout << "alice after send: " << bytew << std::endl;
             const Message *m2 = recv();
-            // std::cout << "alice after recv" << std::endl;
+            std::cout << "alice after recv" << byter << std::endl;
             if (m2 != NULL) {
                 record(m2);
             }
