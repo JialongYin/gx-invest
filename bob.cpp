@@ -54,7 +54,7 @@ const Message *recv()
     /*Non-blocking FIFO*/
     // static ssize_t byter;
     // if ((byter = read(fifo, m, m->size)) == -1) {
-    //     return nullptr;
+    //     return NULL;
     // }
     // assert(byter == m->size);
 
@@ -125,7 +125,7 @@ const Message *recv()
 //     while (true)
 //     {
 //         const Message *m1 = recv();
-//         if (m1 != nullptr) {
+//         if (m1 != NULL) {
 //             assert(m1->checksum == crc32(m1));
 //             memcpy(m2, m1, m1->size); // 拷贝m1至m2
 //             m2->payload[0]++;         // 第一个字符加一
