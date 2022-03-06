@@ -184,8 +184,8 @@ const Message *recv()
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
 
     /*Blocking FIFO*/
-    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
-    assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
+    // assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    // assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     /*Non-blocking FIFO*/
     static ssize_t byter;
     if ((byter = read(fifo, m, m->size)) == -1) {
