@@ -56,7 +56,7 @@ const Message *recv()
     if ((byter = read(fifo, m, m->size)) == -1) {
         return nullptr;
     }
-    assert(byter == m->size)
+    assert(byter == m->size);
 
     return m;
 }
