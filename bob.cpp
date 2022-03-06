@@ -1,6 +1,6 @@
 #include "common.h"
 
-"""Original Named Pipe"""
+/*Original Named Pipe*/
 void send(const Message *message)
 {
     static int fifo = 0;
@@ -34,7 +34,7 @@ const Message *recv()
     return m;
 }
 
-"""Shared Memory(User-defined deepCopy)"""
+/*Shared Memory(User-defined deepCopy)*/
 // sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
 // sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
 // sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
