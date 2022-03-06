@@ -267,7 +267,7 @@ int main()
         /*Blocking FIFO*/
         // const Message *m1 = next_message();
         /*Non-blocking FIFO*/
-        if (bytew != -1) {
+        if (bytew != -1)
             m1 = next_message();
 
         if (m1)
