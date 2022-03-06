@@ -269,9 +269,11 @@ int main()
         /*Blocking FIFO*/
         // const Message *m1 = next_message();
         /*Non-blocking FIFO*/
+        std::cout << "alice before next_message" << std::endl;
         if (bytew != -1)
             m1 = next_message();
 
+        std::cout << "alice before if" << std::endl;
         if (m1)
         {
             std::cout << "alice before send" << std::endl;
