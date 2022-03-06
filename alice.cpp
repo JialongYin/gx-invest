@@ -98,7 +98,15 @@ const Message *next_message()
         return NULL;
     std::cout << "pass here 2" << std::endl;
     auto c = test_cases.front();
-    if (c.first > now())
+
+    time_t seconds = now();
+    std::stringstream ss, tt;
+    ss << seconds;
+    tt << c.first;
+    std::string ts = ss.str(), st = tt.str();
+    std::cout << "ts: " << ts << " st:" << st << std::endl;
+
+    if (c.first > second)
         return NULL;
     std::cout << "pass here 3" << std::endl;
 

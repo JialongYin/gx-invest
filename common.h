@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <set>
 #include <iostream>
+#include <sstream>
 
 // Linux
 #include <unistd.h>
