@@ -206,7 +206,7 @@ int main()
         std::cout << "alice before if: " << bytew << std::endl;
         if (m1)
         {
-            std::cout << "alice before send" << std::endl;
+            // std::cout << "alice before send" << std::endl;
             send(m1);
             // std::cout << "alice after send" << std::endl;
             const Message *m2 = recv();
