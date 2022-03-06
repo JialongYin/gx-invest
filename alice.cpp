@@ -201,7 +201,7 @@ int main()
         if (bytew != -1)
             m1 = next_message();
 
-        // std::cout << "alice before if" << std::endl;
+        std::cout << "alice before if: " << bytew << std::endl;
         if (m1)
         {
             // std::cout << "alice before send" << std::endl;
