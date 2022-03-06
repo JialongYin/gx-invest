@@ -195,7 +195,7 @@ const Message *recv()
 int main()
 {
     const Message *m1 = NULL;
-    int i = 10000;
+    int i = 5000;
     while (i--)
     {
         // std::cout << "alice before next_message" << std::endl;
