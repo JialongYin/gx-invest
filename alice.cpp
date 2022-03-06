@@ -137,9 +137,7 @@ void record(const Message *m)
 
 
 void deepCopy(Message *str, const Message *message) {
-    // std::cout << "deepCopy 1" << std::endl;
     str->t = message->t;
-    // std::cout << "deepCopy 2" << std::endl;
     str->size = message->size;
     str->checksum = message->checksum;
     int *ps = (int *)(str->payload);
@@ -147,17 +145,7 @@ void deepCopy(Message *str, const Message *message) {
     for (auto i = message->payload_size() / 4; i; --i) {
         *ps++ = *pm++;
     }
-    // std::cout << "deepCopy 3" << std::endl;
 }
-
-
-// sem_t *empty_ab;
-// sem_t *full_ab;
-// sem_t *mutex_ab;
-//
-// sem_t *empty_ba;
-// sem_t *full_ba;
-// sem_t *mutex_ba;
 
 sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
 sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
@@ -166,12 +154,6 @@ sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
 sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
 sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
 sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
-
-//
-// int sval;
-// sem_getvalue(full_ba, &sval);
-// printf("full_ba value 0: %d\n", sval);
-// std::cout << "full_ba value 1: " << sval << std::endl;
 
 void send(const Message *message)
 {
@@ -195,12 +177,9 @@ void send(const Message *message)
         str = (Message*) shmat(shmid,(void*)0,0);
         assert(str != (void *)-1);
     }
-    // std::cout << "alice send 1" << std::endl;
     sem_wait(empty_ab);
     sem_wait(mutex_ab);
-    // std::cout << "alice send 2" << std::endl;
     deepCopy(str, message);
-    // std::cout << "alice send 3" << std::endl;
     sem_post(mutex_ab);
     sem_post(full_ab);
 }
@@ -231,16 +210,9 @@ const Message *recv()
         assert(str != (void *)-1);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    // std::cout << "alice recv 1" << std::endl;
-
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 2: " << sval << std::endl;
-
     sem_wait(full_ba);
     sem_wait(mutex_ba);
-    // std::cout << "alice recv 2" << std::endl;
     deepCopy(m, str);
-    // std::cout << "alice recv 3" << std::endl;
     sem_post(mutex_ba);
     sem_post(empty_ba);
     return m;
@@ -249,32 +221,12 @@ const Message *recv()
 
 int main()
 {
-
-
-
-
-    // std::cout << "original sval: " << sval << std::endl;
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 1: " << sval << std::endl;
-    // sem_wait(full_ba);
-    // sem_getvalue(full_ba, &sval);
-    // std::cout << "full_ba value 2: " << sval << std::endl;
-
-    // sem_getvalue(full_ab, &sval);
-    // std::cout << "full_ab value 1: " << sval << std::endl;
-
-    // sem_getvalue(empty_ab, &sval);
-    // std::cout << "empty_ab value 1: " << sval << std::endl;
-
     while (true)
     {
-
         const Message *m1 = next_message();
         if (m1)
         {
-            // std::cout << "alice: before send" << std::endl;
             send(m1);
-            // std::cout << "alice: before recv" << std::endl;
             const Message *m2 = recv();
             record(m2);
         }
@@ -285,6 +237,6 @@ int main()
             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
         }
     }
-
+    
     return 0;
 }
