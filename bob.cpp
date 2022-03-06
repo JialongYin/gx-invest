@@ -18,8 +18,10 @@ void send(const Message *message)
 
     // static ssize_t bytew;
     if ((bytew = write(fifo, message, message->size)) == -1) {
+        std::cout << "bob after send: " << bytew << std::endl;
         return;
     }
+    std::cout << "bob after send: " << bytew << std::endl;
     assert(bytew == message->size);
 }
 const Message *recv()
