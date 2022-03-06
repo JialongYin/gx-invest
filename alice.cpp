@@ -92,12 +92,15 @@ const Message *next_message()
         exit(0);
     }
 
+    std::cout << "pass here 1" << std::endl;
     // 检查下一条消息是否已经到时间
     if (test_cases.empty())
         return NULL;
+    std::cout << "pass here 2" << std::endl;
     auto c = test_cases.front();
     if (c.first > now())
         return NULL;
+    std::cout << "pass here 3" << std::endl;
 
     // 在堆上申请Message的临时空间，并在所有next_message的调用中复用
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
