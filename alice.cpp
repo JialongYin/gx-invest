@@ -272,8 +272,11 @@ int main()
 
         if (m1)
         {
+            std::cout << "alice before send" << std::endl;
             send(m1);
+            std::cout << "alice after send" << std::endl;
             const Message *m2 = recv();
+            std::cout << "alice after recv: " << std::endl;
 
             /*Blocking FIFO*/
             // record(m2);
