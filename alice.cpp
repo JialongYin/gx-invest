@@ -170,11 +170,10 @@ void record(const Message *m)
 //     return m;
 // }
 
-/*Shared Memory(User-defined deepCopy)*/
+/*Shared Memory*/
 sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
 sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
 sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
-
 sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
 sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
 sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
@@ -200,7 +199,10 @@ void send(const Message *message)
     }
     sem_wait(empty_ab);
     sem_wait(mutex_ab);
-    deepCopy(str, message);
+    /*User-defined deepCopy*/
+    // deepCopy(str, message);
+    /*library memory copy memcpy*/
+    memcpy (str, message, message->size);
     sem_post(mutex_ab);
     sem_post(full_ab);
 }
@@ -216,7 +218,10 @@ const Message *recv()
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     sem_wait(full_ba);
     sem_wait(mutex_ba);
-    deepCopy(m, str);
+    /*User-defined deepCopy*/
+    // deepCopy(m, str);
+    /*library memory copy memcpy*/
+    memcpy (m, str, str->size);
     sem_post(mutex_ba);
     sem_post(empty_ba);
     return m;
