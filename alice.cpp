@@ -136,6 +136,9 @@ void record(const Message *m)
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
 /*Original Named Pipe*/
+/*Non-blocking FIFO*/
+static ssize_t bytew;
+
 void send(const Message *message)
 {
     static int fifo = 0;
@@ -157,7 +160,6 @@ void send(const Message *message)
     /*Blocking FIFO*/
     // assert(write(fifo, message, message->size) == message->size);
     /*Non-blocking FIFO*/
-    static ssize_t bytew;
     if ((bytew = write(fifo, message, message->size)) == -1) {
         return;
     }
@@ -257,13 +259,24 @@ int main()
 {
     while (true)
     {
-        const Message *m1 = next_message();
+
+        /*Blocking FIFO*/
+        // const Message *m1 = next_message();
+        /*Non-blocking FIFO*/
+        if (bytew != -1)
+            const Message *m1 = next_message();
+
         if (m1)
         {
             send(m1);
             const Message *m2 = recv();
+
+            /*Blocking FIFO*/
+            // record(m2);
+            /*Non-blocking FIFO*/
             if (m2 != nullptr)
                 record(m2);
+                
         }
         else
         {
