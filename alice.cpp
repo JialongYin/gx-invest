@@ -106,7 +106,7 @@ const Message *next_message()
     std::string ts = ss.str(), st = tt.str();
     std::cout << "ts: " << ts << " st:" << st << std::endl;
 
-    if (c.first > second)
+    if (c.first > seconds)
         return NULL;
     std::cout << "pass here 3" << std::endl;
 
