@@ -195,8 +195,8 @@ const Message *recv()
 int main()
 {
     const Message *m1 = NULL;
-    int i = 3500;
-    while (i--)
+    // int i = 3500;
+    while (true)
     {
         // std::cout << "alice before next_message" << std::endl;
         // while (bytew != -1 && m1 == NULL)
@@ -206,7 +206,7 @@ int main()
         std::cout << "alice before if: " << bytew << std::endl;
         if (m1)
         {
-            // std::cout << "alice before send" << std::endl;
+            std::cout << "alice before send" << std::endl;
             send(m1);
             // std::cout << "alice after send" << std::endl;
             const Message *m2 = recv();

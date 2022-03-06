@@ -1,6 +1,7 @@
 #include "common.h"
 
 /*Non-blocking FIFO*/
+static ssize_t bytew, byter;
 void send(const Message *message)
 {
     static int fifo = 0;
@@ -15,7 +16,7 @@ void send(const Message *message)
         assert(fifo != 0);
     }
 
-    static ssize_t bytew;
+    // static ssize_t bytew;
     if ((bytew = write(fifo, message, message->size)) == -1) {
         return;
     }
@@ -36,8 +37,7 @@ const Message *recv()
     }
 
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    static ssize_t byter;
-    if ((byter = read(fifo, m, m->size)) == -1) {
+    if ((byter = read(fifo, m, m->size)) == 0) {
         return NULL;
     }
     assert(byter == m->size);
@@ -47,9 +47,11 @@ const Message *recv()
 int main()
 {
     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);
-    while (true)
+    int i = 1000;
+    while (i--)
     {
         const Message *m1 = recv();
+        std::cout << "bob after recv: " << byter << std::endl;
         if (m1 != NULL) {
             assert(m1->checksum == crc32(m1));
             memcpy(m2, m1, m1->size); // 拷贝m1至m2
