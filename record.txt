@@ -21,7 +21,10 @@ n=385 median=31834ns mean=11048115ns std=121531360ns 95%=150099ns 99%=308728942n
 n=385 median=35694ns mean=64963ns std=66926ns 95%=203316ns 99%=287785ns maximum=554078ns
 n=385 median=35125ns mean=119683925ns std=406351069ns 95%=1102813867ns 99%=1879609435ns maximum=3379506505ns
 
+
+
 Shared memory(memcpy()):
 jialong2@sp22-cs484-007
-n=385 median=34799ns mean=61070ns std=56784ns 95%=186319ns 99%=251614ns maximum=297440ns
-n=385 median=32928ns mean=55239ns std=53256ns 95%=172976ns 99%=255945ns maximum=278165ns
+n=385 median=30002ns mean=43262ns std=38503ns 95%=126399ns 99%=176378ns maximum=210735ns
+n=385 median=29915ns mean=44661ns std=42322ns 95%=134387ns 99%=199369ns maximum=270486ns
+n=385 median=32404ns mean=49278ns std=49497ns 95%=151025ns 99%=197405ns maximum=482721ns

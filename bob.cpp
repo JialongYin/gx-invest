@@ -1,95 +1,95 @@
 #include "common.h"
 
 /*Original Named Pipe*/
-// void send(const Message *message)
-// {
-//     static int fifo = 0;
-//     if (fifo == 0)
-//     {
-//         const char *filename = "bob_to_alice";
-//         if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
-//             mkfifo(filename, 0666);
-//         }
-//         fifo = open(filename, O_WRONLY);
-//         assert(fifo != 0);
-//     }
-//     assert(write(fifo, message, message->size) == message->size);
-// }
-// const Message *recv()
-// {
-//     static int fifo = 0;
-//     if (fifo == 0)
-//     {
-//         const char *filename = "alice_to_bob";
-//         if (access(filename, F_OK)) {
-//             mkfifo(filename, 0666);
-//         }
-//
-//         fifo = open(filename, O_RDONLY);
-//         assert(fifo != 0);
-//     }
-//     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-//     assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
-//     assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
-//     return m;
-// }
-
-/*Shared Memory*/
-sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
-sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
-sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
-sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
-sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
-sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
-
-void deepCopy(Message *str, const Message *message) {
-    str->t = message->t;
-    str->size = message->size;
-    str->checksum = message->checksum;
-    int *ps = (int *)(str->payload);
-    int *pm = (int *)(message->payload);
-    for (auto i = message->payload_size() / 4; i; --i) {
-        *ps++ = *pm++;
-    }
-}
 void send(const Message *message)
 {
-    static Message *str;
-    if (str == NULL) {
-        key_t key = ftok("bob_to_alice",65);
-        int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
-        str = (Message*) shmat(shmid,(void*)0,0);
-        assert(str != (void *)-1);
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "bob_to_alice";
+        if (access(filename, F_OK)) { // return 0 if file exists, -1 if no exists
+            mkfifo(filename, 0666);
+        }
+        fifo = open(filename, O_WRONLY);
+        assert(fifo != 0);
     }
-    sem_wait(empty_ba);
-    sem_wait(mutex_ba);
-    /*User-defined deepCopy*/
-    // deepCopy(str, message);
-    /*library memory copy memcpy*/
-    memcpy (str, message, message->size);
-    sem_post(mutex_ba);
-    sem_post(full_ba);
+    assert(write(fifo, message, message->size) == message->size);
 }
 const Message *recv()
 {
-    static Message *str;
-    if (str == NULL) {
-        key_t key = ftok("alice_to_bob",65);
-        int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
-        str = (Message*) shmat(shmid,(void*)0,0);
-        assert(str != (void *)-1);
+    static int fifo = 0;
+    if (fifo == 0)
+    {
+        const char *filename = "alice_to_bob";
+        if (access(filename, F_OK)) {
+            mkfifo(filename, 0666);
+        }
+
+        fifo = open(filename, O_RDONLY);
+        assert(fifo != 0);
     }
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    sem_wait(full_ab);
-    sem_wait(mutex_ab);
-    /*User-defined deepCopy*/
-    // deepCopy(m, str);
-    /*library memory copy memcpy*/
-    memcpy (m, str, str->size);
-    sem_post(mutex_ab);
-    sem_post(empty_ab);
+    assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
+    assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     return m;
 }
+
+/*Shared Memory*/
+// sem_t *full_ab = sem_open("/full_ab", O_CREAT, 0644, 0);
+// sem_t *empty_ab = sem_open("/empty_ab", O_CREAT, 0644, 1);
+// sem_t *mutex_ab = sem_open("/mutex_ab", O_CREAT, 0644, 1);
+// sem_t *full_ba = sem_open("/full_ba", O_CREAT, 0644, 0);
+// sem_t *empty_ba = sem_open("/empty_ba", O_CREAT, 0644, 1);
+// sem_t *mutex_ba = sem_open("/mutex_ba", O_CREAT, 0644, 1);
+//
+// void deepCopy(Message *str, const Message *message) {
+//     str->t = message->t;
+//     str->size = message->size;
+//     str->checksum = message->checksum;
+//     int *ps = (int *)(str->payload);
+//     int *pm = (int *)(message->payload);
+//     for (auto i = message->payload_size() / 4; i; --i) {
+//         *ps++ = *pm++;
+//     }
+// }
+// void send(const Message *message)
+// {
+//     static Message *str;
+//     if (str == NULL) {
+//         key_t key = ftok("bob_to_alice",65);
+//         int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
+//         str = (Message*) shmat(shmid,(void*)0,0);
+//         assert(str != (void *)-1);
+//     }
+//     sem_wait(empty_ba);
+//     sem_wait(mutex_ba);
+//     /*User-defined deepCopy*/
+//     // deepCopy(str, message);
+//     /*library memory copy memcpy*/
+//     memcpy (str, message, message->size);
+//     sem_post(mutex_ba);
+//     sem_post(full_ba);
+// }
+// const Message *recv()
+// {
+//     static Message *str;
+//     if (str == NULL) {
+//         key_t key = ftok("alice_to_bob",65);
+//         int shmid = shmget(key,MESSAGE_SIZES[4],0666|IPC_CREAT);
+//         str = (Message*) shmat(shmid,(void*)0,0);
+//         assert(str != (void *)-1);
+//     }
+//     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
+//     sem_wait(full_ab);
+//     sem_wait(mutex_ab);
+//     /*User-defined deepCopy*/
+//     // deepCopy(m, str);
+//     /*library memory copy memcpy*/
+//     memcpy (m, str, str->size);
+//     sem_post(mutex_ab);
+//     sem_post(empty_ab);
+//     return m;
+// }
 
 int main()
 {
