@@ -193,14 +193,11 @@ const Message *recv()
 /*Non-blocking FIFO*/
 int main()
 {
-    const Message *m1 = NULL;
-
     while (true)
     {
         // std::cout << "alice before next_message" << std::endl;
         // while (bytew != -1 && m1 == NULL)
-        if (m1 == NULL)
-            m1 = next_message();
+        const Message *m1 = next_message();
 
         // std::cout << "alice before if" << std::endl;
         if (m1)
