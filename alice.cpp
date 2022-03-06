@@ -167,7 +167,6 @@ void send(const Message *message)
         std::cout << "alice send: " << bytew << std::endl;
         return;
     }
-    std::cout << "alice send: " << bytew << std::endl;
     assert(bytew == message->size);
 }
 const Message *recv()
@@ -184,11 +183,10 @@ const Message *recv()
     }
 
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
-    if ((byter = read(fifo, m, m->size)) == -1) {
+    if ((byter = read(fifo, m, m->size)) == 0) {
         std::cout << "alice recv: " << byter << std::endl;
         return NULL;
     }
-    std::cout << "alice recv: " << byter << std::endl;
     assert(byter == m->size);
     return m;
 }
