@@ -40,8 +40,10 @@ const Message *recv()
 
     static Message *m = (Message *)malloc(MESSAGE_SIZES[4]);
     if ((byter = read(fifo, m, m->size)) == 0) {
+        std::cout << "bob after recv: " << byter << std::endl;
         return NULL;
     }
+    std::cout << "bob after recv: " << byter << std::endl;
     assert(byter == m->size);
     return m;
 }
