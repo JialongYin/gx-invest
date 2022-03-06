@@ -15,4 +15,4 @@ Semaphores is used to synchronize shared memory between processes.
 
 Message queue and socket also require system calls to pass data that may not help in our case.
 
-unblocking, larger shared memory
+unblocking

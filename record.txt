@@ -23,6 +23,11 @@ n=385 median=35125ns mean=119683925ns std=406351069ns 95%=1102813867ns 99%=18796
 
 
 
+Original(FIFO):
+jialong2@sp22-cs484-007
+n=385 median=13265ns mean=7613767ns std=92949205ns 95%=62322ns 99%=86663ns maximum=1474420619ns
+
+
 Shared memory(memcpy()):
 jialong2@sp22-cs484-007
 n=385 median=30002ns mean=43262ns std=38503ns 95%=126399ns 99%=176378ns maximum=210735ns
