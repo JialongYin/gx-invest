@@ -257,18 +257,17 @@ const Message *recv()
 
 int main()
 {
-
-    /*Non-blocking FIFO*/
-    Message *m1;
-
     while (true)
     {
 
         /*Blocking FIFO*/
         // const Message *m1 = next_message();
         /*Non-blocking FIFO*/
-        if (bytew != -1)
-            m1 = next_message();
+        if (bytew != -1) {
+            const Message *m1 = next_message();
+        } else {
+            const Message *m1 = nullptr;
+        }
 
         if (m1)
         {
