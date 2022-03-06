@@ -148,7 +148,7 @@ void record(const Message *m)
 
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
-/*Non-blocking FIFO*/
+/*Non-blocking FIFO(in progress)*/
 // static ssize_t bytew = 0, byter = 0;
 // void send(const Message *message)
 // {
@@ -191,7 +191,7 @@ void record(const Message *m)
 //     assert(byter == m->size);
 //     return m;
 // }
-// /*Non-blocking FIFO*/
+// /*Non-blocking FIFO(in progress)*/
 // int main()
 // {
 //     const Message *m1 = NULL;
@@ -225,6 +225,7 @@ void record(const Message *m)
 //
 //     return 0;
 // }
+
 
 
 /*Blocking FIFO(Original)*/

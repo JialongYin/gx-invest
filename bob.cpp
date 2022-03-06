@@ -1,6 +1,6 @@
 #include "common.h"
 
-/*Non-blocking FIFO*/
+/*Non-blocking FIFO(in progress)*/
 // static ssize_t bytew, byter;
 // void send(const Message *message)
 // {
@@ -47,7 +47,7 @@
 //     assert(byter == m->size);
 //     return m;
 // }
-/*Non-blocking FIFO*/
+/*Non-blocking FIFO(in progress)*/
 // int main()
 // {
 //     Message *m2 = (Message *)malloc(MESSAGE_SIZES[4]);

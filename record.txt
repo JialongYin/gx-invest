@@ -1,10 +1,22 @@
-主要关注中位数、均值和99分位数
+Since the programs are run on the cluster of the unversity. The performance is unstable. In general, we
+can tell shared memory has smaller mean, std, 99% and maximum than named-pipe.
+
 Original(FIFO):
 jialong2@sp22-cs484-007
+n=385 median=13265ns mean=7613767ns std=92949205ns 95%=62322ns 99%=86663ns maximum=1474420619ns
+n=385 median=13137ns mean=14860100ns std=150584574ns 95%=66434ns 99%=623347943ns maximum=2123297781ns
+n=385 median=13400ns mean=8571400ns std=101025947ns 95%=78575ns 99%=72781686ns maximum=1572741918ns
 n=385 median=13516ns mean=8821012ns std=103053028ns 95%=75077ns 99%=96880669ns maximum=1596839904ns
 n=385 median=13558ns mean=4773912ns std=64615509ns 95%=64470ns 99%=89841ns maximum=1109966438ns
 
-
+Shared memory(memcpy()):
+jialong2@sp22-cs484-007
+n=385 median=30002ns mean=43262ns std=38503ns 95%=126399ns 99%=176378ns maximum=210735ns
+n=385 median=29915ns mean=44661ns std=42322ns 95%=134387ns 99%=199369ns maximum=270486ns
+n=385 median=32404ns mean=49278ns std=49497ns 95%=151025ns 99%=197405ns maximum=482721ns
+n=385 median=31106ns mean=56153ns std=71783ns 95%=206889ns 99%=273323ns maximum=827304ns
+n=385 median=11035ns mean=16029ns std=14113ns 95%=48079ns 99%=67296ns maximum=70736ns
+n=385 median=26445ns mean=41017ns std=53200ns 95%=119381ns 99%=274966ns maximum=512053ns
 
 Shared memory(deepCopy()):
 jialong2@sp22-cs484-007
@@ -12,22 +24,3 @@ n=385 median=34918ns mean=8569730ns std=100699464ns 95%=220819ns 99%=68942280ns 
 n=385 median=31834ns mean=11048115ns std=121531360ns 95%=150099ns 99%=308728942ns maximum=1808687495ns
 n=385 median=35694ns mean=64963ns std=66926ns 95%=203316ns 99%=287785ns maximum=554078ns
 n=385 median=35125ns mean=119683925ns std=406351069ns 95%=1102813867ns 99%=1879609435ns maximum=3379506505ns
-
-
-
-Original(FIFO):
-jialong2@sp22-cs484-007
-n=385 median=13265ns mean=7613767ns std=92949205ns 95%=62322ns 99%=86663ns maximum=1474420619ns
-n=385 median=13137ns mean=14860100ns std=150584574ns 95%=66434ns 99%=623347943ns maximum=2123297781ns
-n=385 median=13400ns mean=8571400ns std=101025947ns 95%=78575ns 99%=72781686ns maximum=1572741918ns
-
-n=385 median=13592ns mean=22247ns std=31183ns 95%=61751ns 99%=85579ns maximum=520852ns
-n=385 median=13452ns mean=21333ns std=21388ns 95%=61965ns 99%=84441ns maximum=241983ns
-
-
-
-Shared memory(memcpy()):
-jialong2@sp22-cs484-007
-n=385 median=30002ns mean=43262ns std=38503ns 95%=126399ns 99%=176378ns maximum=210735ns
-n=385 median=29915ns mean=44661ns std=42322ns 95%=134387ns 99%=199369ns maximum=270486ns
-n=385 median=32404ns mean=49278ns std=49497ns 95%=151025ns 99%=197405ns maximum=482721ns
