@@ -72,7 +72,7 @@ std::vector<time_t> delays;
 const Message *next_message()
 {
     // 所有测试用例均完成，打印统计结果并退出
-    std::cout << "current: " << delays.size() << " target: " << test_case_count << std::endl;
+    std::cout << "left: " << test_cases.size() << " target: " << test_case_count << std::endl;
     if (delays.size() == test_case_count)
     {
         std::sort(delays.begin(), delays.end());
@@ -138,7 +138,7 @@ void record(const Message *m)
 
 /*Original Named Pipe*/
 /*Non-blocking FIFO*/
-static ssize_t bytew = 0;
+static ssize_t bytew = 0, byter = 0;
 
 void send(const Message *message)
 {
@@ -192,12 +192,10 @@ const Message *recv()
     // assert(read(fifo, m, sizeof(Message)) == sizeof(Message));
     // assert(read(fifo, m->payload, m->payload_size()) == m->payload_size());
     /*Non-blocking FIFO*/
-    static ssize_t byter = 0;
     if ((byter = read(fifo, m, m->size)) == 0) {
         return nullptr;
     }
     assert(byter == m->size);
-    // std::cout << "alice recv: " << byter << std::endl;
 
     return m;
 }
@@ -265,22 +263,22 @@ int main()
     /*Non-blocking FIFO*/
     const Message *m1;
 
-    while (true)
-    {
+    // while (true)
+    // {
 
         /*Blocking FIFO*/
         // const Message *m1 = next_message();
         /*Non-blocking FIFO*/
-        if (bytew != 0)
+        if (bytew != -1)
             m1 = next_message();
 
         if (m1)
         {
             // std::cout << "alice before send" << std::endl;
             send(m1);
-            // std::cout << "alice before recv" << std::endl;
+            std::cout << "alice after send: " << bytew << std::endl;
             const Message *m2 = recv();
-            // std::cout << "alice after recv" << std::endl;
+            std::cout << "alice after recv: " << byter << std::endl;
 
             /*Blocking FIFO*/
             // record(m2);
@@ -299,7 +297,7 @@ int main()
             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
             nanosleep(&req, &rem); // 等待到下一条消息的发送时间
         }
-    }
+    // }
 
     return 0;
 }
