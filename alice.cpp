@@ -104,7 +104,7 @@ const Message *next_message()
     ss << seconds;
     tt << c.first;
     std::string ts = ss.str(), st = tt.str();
-    std::cout << "ts: " << ts << " st:" << st << std::endl;
+    std::cout << " st:" << st << "ts: " << ts << std::endl;
 
     if (c.first > seconds)
         return NULL;
