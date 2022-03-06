@@ -209,11 +209,10 @@ int main()
         {
             std::cout << "alice before send" << std::endl;
             send(m1);
-            std::cout << "alice after send: " << bytew << std::endl;
+            std::cout << "alice after send" << std::endl;
             const Message *m2 = recv();
-            std::cout << "alice after recv: " << byter << std::endl;
+            std::cout << "alice after recv" << std::endl;
             if (m2 != NULL) {
-                // std::cout << "alice before record: " << m2->size << std::endl;
                 record(m2);
             }
         }
